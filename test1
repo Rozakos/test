@@ -1,42 +1,21 @@
-import sys
+import pyautogui
 import time
-import win32api
-
-if (len(sys.argv) < 4):
-	print "Usage: python mousemove.py dx dy speed"
-	sys.exit()
-
-current = win32api.GetCursorPos()
-cx = sx = current[0]
-cy = sy = current[1]
-
-mx = int(sys.argv[1])
-my = int(sys.argv[2])
-vx = vy = int(sys.argv[3])
-
-print "Moving", mx, my, "with", vx, "pixels per second"
-print "Press 'q' to quit"
-
-last = time.time()
-
+import sys
+from datetime import datetime
+pyautogui.FAILSAFE = False
+numMin = None
+if ((len(sys.argv)<2) or sys.argv[1].isalpha() or int(sys.argv[1])<1):
+    numMin = 3
+else:
+    numMin = int(sys.argv[1])
 while(True):
-	if win32api.GetAsyncKeyState(ord('Q')):
-		sys.exit()
-		
-	current = time.time()
-	tick = current - last
-	last = current
-	
-	if mx > 0:
-		cx += vx * tick;
-		if cx > mx + sx or cx < sx:
-			vx = -vx;
-			cx = max( sx, min( mx + sx, cx ) )
-	if( my > 0 ):
-		cy += vy * tick;
-		if cy > my + sy or cy < sy:
-			vy = -vy;
-			cy = max( sy, min( my + sy, cy ) )
-	
-	win32api.SetCursorPos((int(cx),int(cy)))
-	time.sleep(0.001)
+    x=0
+    while(x<numMin):
+        time.sleep(60)
+        x+=1
+    for i in range(0,200):
+        pyautogui.moveTo(0,i*4)
+    pyautogui.moveTo(1,1)
+    for i in range(0,3):
+        pyautogui.press("shift")
+    print("Movement made at {}".format(datetime.now().time()))
